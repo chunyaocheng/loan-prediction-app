@@ -1,0 +1,3 @@
+([('test_ui2',
+   '/Users/zhengqunyao/Documents/mid-HPT/code/dist/test_ui2',
+   'EXECUTABLE')],)
