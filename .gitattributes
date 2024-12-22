@@ -1,1 +1,5 @@
 *.pkl filter=lfs diff=lfs merge=lfs -text
+檔案類型 filter=lfs diff=lfs merge=lfs -text
+\# filter=lfs diff=lfs merge=lfs -text
+追蹤 filter=lfs diff=lfs merge=lfs -text
+.pkl filter=lfs diff=lfs merge=lfs -text
