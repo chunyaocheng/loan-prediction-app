@@ -3,9 +3,13 @@ import pandas as pd
 import joblib
 
 # 載入模型
-#model_path = "/Users/zhengqunyao/loan_prediction_model_tuned.pkl"
+#model_path = "/Users/zhengqunyao/loan_prediction_mel_tuned.pkl"
 model_path = "loan_prediction_model_tuned.pkl"
+
 loaded_model = joblib.load(model_path)
+
+
+
 
 # 定義應用的標題
 st.title("增貸預測模型")
