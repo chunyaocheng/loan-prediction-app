@@ -298,7 +298,7 @@ Employment = st.selectbox("Employment (就業情況)", options=list(employment_o
 Marital = st.selectbox("Marital (婚姻狀態)", options=list(marital_options.keys()), index=0)
 CompanyRelationship = st.selectbox("CompanyRelationship (與公司關係)", options=list(companyrelationship_options.keys()), index=1)
 Industry = st.selectbox("Industry (行業別)", options=list(industry_options.keys()), index=34)
-Job = st.selectbox("Job (職稱)", options=list(job_options.keys()), index=13)
+Job = st.selectbox("Job (職稱)", options=list(job_options.keys()), index=9)
 Type = st.selectbox("Type (申貸性質)", options=list(loan_type_options.keys()), index=0)
 ApprovalResult = st.selectbox("ApprovalResult (審核結果)", options=list(approval_result_options.keys()), index=25)
 Years = st.number_input("Years (原房貸距今年份)", min_value=0, max_value=100, value=13, step=1)
