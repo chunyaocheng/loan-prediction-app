@@ -128,12 +128,13 @@ def plot_feature_importances(model, features, output_path=None):
     if output_path:
         plt.savefig(output_path)
         print(f"特徵重要性圖已儲存至：{output_path}")
+
     plt.show()
 
 # 定義主程式
 if __name__ == "__main__":
     # 定義參數
-    file_path = "/Users/zhengqunyao/machine_learning_v25.xlsx"
+    file_path = "/Users/zhengqunyao/machine_learning_v37.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
                 "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
     target = "Flag"
@@ -148,6 +149,6 @@ if __name__ == "__main__":
     plot_feature_importances(model, features, output_path="/Users/zhengqunyao/feature_importances_tuned.png")
     
     # 儲存模型
-    model_path = "/Users/zhengqunyao/loan_prediction_model_tuned.pkl"
+    model_path = "/Users/zhengqunyao/loan_prediction_model_tuned1.pkl"
     joblib.dump(model, model_path)
     print(f"模型已儲存至：{model_path}")

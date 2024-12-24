@@ -3,10 +3,11 @@ import pandas as pd
 import joblib
 
 # 載入模型
-#model_path = "/Users/zhengqunyao/loan_prediction_mel_tuned.pkl"
-#model_path = "loan_prediction_model_tuned.pkl"
+# model_path = "/Users/zhengqunyao/loan_prediction_model_tuned.pkl"
+# loaded_model = joblib.load(model_path)
+# model_path = "loan_prediction_model_tuned.pkl"
 
-#loaded_model = joblib.load(model_path)
+# loaded_model = joblib.load(model_path)
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -21,7 +22,7 @@ loaded_model = load_model()
 
 
 # 定義應用的標題
-st.title("增貸預測模型")
+st.title("mid-HPT 第三組, e啟房貸數位升級 增貸預測模型")
 
 # 讓使用者輸入資料
 st.header("請輸入以下資訊進行預測：")
@@ -307,35 +308,38 @@ Employment = st.selectbox("Employment (就業情況)", options=list(employment_o
 Marital = st.selectbox("Marital (婚姻狀態)", options=list(marital_options.keys()), index=0)
 CompanyRelationship = st.selectbox("CompanyRelationship (與公司關係)", options=list(companyrelationship_options.keys()), index=1)
 Industry = st.selectbox("Industry (行業別)", options=list(industry_options.keys()), index=34)
-Job = st.selectbox("Job (職稱)", options=list(job_options.keys()), index=9)
+Job = st.selectbox("Job (職稱)", options=list(job_options.keys()), index=13)
 Type = st.selectbox("Type (申貸性質)", options=list(loan_type_options.keys()), index=0)
 ApprovalResult = st.selectbox("ApprovalResult (審核結果)", options=list(approval_result_options.keys()), index=25)
-Years = st.number_input("Years (原房貸距今年份)", min_value=0, max_value=100, value=9, step=1)
-Age = st.number_input("Age (當時年齡)", min_value=0, max_value=120, value=34, step=1)
+Years = st.number_input("Years (原房貸距今年份)", min_value=0, max_value=15, value=9, step=1)
+Age = st.number_input("Age (當時年齡)", min_value=0, max_value=80, value=39, step=1)
 
-Income = st.number_input("Income (月收入)", min_value=0, max_value=1000000, value=60000, step=1)
-LoanIncomeRatio = st.number_input("LoanIncomeRatio (負債比)", min_value=0, max_value=100, value=40, step=1)
-Adjust = st.number_input("Adjust (碼數)", min_value=0.0, max_value=10.0, value=0.8, step=0.01, format="%.2f")
+Income = st.number_input("Income (月收入)", min_value=0, max_value=1000000, value=68000, step=1000)
+LoanIncomeRatio = st.number_input("LoanIncomeRatio (負債比)", min_value=0.0, max_value=10000.0, value=50.0, step=0.01, format="%.2f")
+Adjust = st.number_input("Adjust (碼數)", min_value=0.0, max_value=10.0, value=0.68, step=0.01, format="%.2f")
 
 
 # 當使用者按下預測按鈕時
 if st.button("預測"):
     # 構建單筆資料
     single_data = {
-        "Education": Education,
-        "Employment": Employment,
-        "Marital": Marital,
-        "CompanyRelationship": CompanyRelationship,
-        "Industry": Industry,
-        "Job": Job,
-        "Type": Type,
-        "ApprovalResult": ApprovalResult,
+        "Education": education_options[Education],
+        "Employment": employment_options[Employment],
+        "Marital": marital_options[Marital],
+        "CompanyRelationship": companyrelationship_options[CompanyRelationship],
+        "Industry": industry_options[Industry],
+        "Job": job_options[Job],
+        "Type": loan_type_options[Type],
+        "ApprovalResult": approval_result_options[ApprovalResult],
         "Years": Years,
         "Age": Age,
         "Income": Income,
         "LoanIncomeRatio": LoanIncomeRatio,
         "Adjust": Adjust,
+        
     }
+    print(single_data)
+
     
     # 將單筆資料轉為 DataFrame
     single_data_df = pd.DataFrame([single_data])

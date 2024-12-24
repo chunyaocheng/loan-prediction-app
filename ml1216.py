@@ -109,7 +109,7 @@ def plot_feature_importances(model, features, output_path=None):
 # 主程式
 if __name__ == "__main__":
     # 定義檔案路徑與參數
-    file_path = "/Users/zhengqunyao/machine_learning_v25.xlsx"
+    file_path = "/Users/zhengqunyao/machine_learning_v37.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
                 "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
     target = "Flag"
@@ -121,9 +121,9 @@ if __name__ == "__main__":
     best_model = train_xgboost_with_tuning(X, y)
     
     # 特徵重要性
-    plot_feature_importances(best_model, features, output_path="/Users/zhengqunyao/feature_importances_xgboost253.png")
+    plot_feature_importances(best_model, features, output_path="/Users/zhengqunyao/feature_importances_xgboost12221.png")
     
     # 儲存模型
-    model_path = "/Users/zhengqunyao/loan_prediction_xgboost253.pkl"
+    model_path = "/Users/zhengqunyao/loan_prediction_xgboost12221.pkl"
     joblib.dump(best_model, model_path)
     print(f"模型已儲存至：{model_path}")

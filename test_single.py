@@ -2,22 +2,25 @@ import pandas as pd
 import joblib
 
 # 1. 載入模型
-model_path = "/Users/zhengqunyao/loan_prediction_xgboost5.pkl"
+model_path = "/Users/zhengqunyao/loan_prediction_model_tuned.pkl"
 loaded_model = joblib.load(model_path)
 print("模型已成功載入！")
 
 # 2. 準備單筆資料
 single_data = {
-    "Education": 40,
+    "Education": 50,
     "Employment": 10,
-    "Marital": 10,
-    "CompanyRelationship": 50,
-    "Industry": "I",
-    "Job": "0",
-    "Type": "20",
-    "ApprovalResult": "A010",
-    "Years": 15,
-    "Age": 57
+    "Marital": 20,
+    "CompanyRelationship": 20,
+    "Industry": "F",
+    "Job": "6",
+    "Type": 10,
+    "ApprovalResult": "A051",
+    "Years": 11,
+    "Age": 37,
+    "Income": 22400,
+    "LoanIncomeRatio": 44.96,
+    "Adjust": 0.57
 }
 
 single_data_df = pd.DataFrame([single_data])
