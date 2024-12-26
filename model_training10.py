@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 import numpy as np
-from sklearn.metrics import precision_score, recall_score, f1_score
+from sklearn.metrics import precision_score, recall_score, f1_score, precision_recall_curve
 
 # 定義資料讀取與檢查函數
 def load_and_preprocess_data(file_path, features, target):
@@ -87,11 +87,19 @@ def train_random_forest_with_tuning(X, y, test_size=0.2, random_state=42):
     # 最佳參數與模型
     best_model = grid_search.best_estimator_
     print(f"最佳參數：{grid_search.best_params_}")
+
     
     # 預測測試集
     y_pred = best_model.predict(X_test)
     y_prob = best_model.predict_proba(X_test)[:, 1]  # 類別 1 的機率
-    y_pred = (y_prob >= 0.5).astype(int)  # 預設閥值 0.1
+    y_pred = (y_prob >= 0.25).astype(int)  # 預設閥值 0.1
+
+    precision, recall, thresholds = precision_recall_curve(y_test, y_prob)
+    
+    # 找到最佳閾值
+    f1_scores = 2 * (precision * recall) / (precision + recall)
+    best_threshold = thresholds[f1_scores.argmax()]
+    print(f"最佳閾值：{best_threshold}")
     
     print("預設閥值 (0.5) 下的分類報告：\n", classification_report(y_test, y_pred))
     print("混淆矩陣：\n", confusion_matrix(y_test, y_pred))
@@ -134,9 +142,10 @@ def plot_feature_importances(model, features, output_path=None):
 # 定義主程式
 if __name__ == "__main__":
     # 定義參數
-    file_path = "/Users/zhengqunyao/machine_learning_v37.xlsx"
+    file_path = "/Users/zhengqunyao/machine_learning_v25.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
                 "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
+    #
     target = "Flag"
     
     # 資料讀取與預處理
@@ -149,6 +158,6 @@ if __name__ == "__main__":
     plot_feature_importances(model, features, output_path="/Users/zhengqunyao/feature_importances_tuned.png")
     
     # 儲存模型
-    model_path = "/Users/zhengqunyao/loan_prediction_model_tuned1.pkl"
+    model_path = "/Users/zhengqunyao/loan_prediction_model_tuned2525.pkl"
     joblib.dump(model, model_path)
     print(f"模型已儲存至：{model_path}")

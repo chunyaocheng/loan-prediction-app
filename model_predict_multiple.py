@@ -2,7 +2,7 @@ import pandas as pd
 import joblib
 
 # 1. 載入模型
-model_path = "/Users/zhengqunyao/loan_prediction_model_tuned.pkl"
+model_path = "/Users/zhengqunyao/loan_prediction_model_tuned2525.pkl"
 loaded_model = joblib.load(model_path)
 print("模型已成功載入！")
 
@@ -49,6 +49,6 @@ for index, row in data.iterrows():
     data.loc[index, '增貸概率'] = predicted_prob[0]
 
 # 4. 儲存回寫結果的資料到新的 Excel
-output_path = "/Users/zhengqunyao/machine_learning_v37_predicted.xlsx"
+output_path = "/Users/zhengqunyao/machine_learning_v37_predicted2525.xlsx"
 data.to_excel(output_path, index=False)
 print(f"預測完成，結果已儲存至：{output_path}")

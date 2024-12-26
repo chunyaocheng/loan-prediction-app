@@ -10,7 +10,7 @@ y_true = data['實際類別']  # 真實值
 y_prob = data['增貸概率']  # 模型預測概率
 
 # 將增貸概率 >= 0.2 視為 1，否則為 0
-threshold = 0.1
+threshold = 0.2
 y_pred_adjusted = (y_prob >= threshold).astype(int)
 
 # 計算精確率、召回率和混淆矩陣
