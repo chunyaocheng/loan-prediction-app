@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import (
     accuracy_score, classification_report, confusion_matrix,
@@ -9,8 +9,8 @@ from sklearn.metrics import (
 from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
 import seaborn as sns
-import joblib
 import numpy as np
+import joblib
 
 
 # 資料讀取與預處理函數
@@ -40,19 +40,8 @@ def load_and_preprocess_data(file_path, features, target):
         raise
 
 
-# 閾值評估函數
-def evaluate_threshold(y_true, y_probs, thresholds):
-    print("調整閾值並評估結果：")
-    for threshold in thresholds:
-        y_pred_adj = (y_probs >= threshold).astype(int)
-        precision = precision_score(y_true, y_pred_adj)
-        recall = recall_score(y_true, y_pred_adj)
-        f1 = f1_score(y_true, y_pred_adj)
-        print(f"閾值: {threshold:.2f} -> 精確率: {precision:.4f}, 召回率: {recall:.4f}, F1 分數: {f1:.4f}")
-
-
-# 模型訓練與超參數調整函數
-def train_random_forest_with_tuning(X, y, test_size=0.2, random_state=42):
+# 模型訓練與超參數調整函數 (SVM)
+def train_svm_with_tuning(X, y, test_size=0.2, random_state=42):
     # 資料集分割
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
     print(f"訓練集大小：{X_train.shape}, 測試集大小：{X_test.shape}")
@@ -62,17 +51,16 @@ def train_random_forest_with_tuning(X, y, test_size=0.2, random_state=42):
     X_train, y_train = smote.fit_resample(X_train, y_train)
     print(f"過抽樣後訓練集大小：{X_train.shape}, {y_train.shape}")
 
-    # 定義隨機森林模型參數網格
+    # 定義 SVM 模型參數網格
     param_grid = {
-        'n_estimators': [100, 200, 300],
-        'max_depth': [10, 20, 30],
-        'min_samples_split': [2, 5, 10],
-        'class_weight': ['balanced', 'balanced_subsample']
+        'C': [0.1, 1, 10],               # 正則化參數
+        'kernel': ['linear', 'rbf'],     # 核函數
+        'gamma': ['scale', 'auto'],      # RBF 核函數的 gamma 參數
     }
 
     # 使用 GridSearchCV 尋找最佳參數
     grid_search = GridSearchCV(
-        estimator=RandomForestClassifier(random_state=random_state),
+        estimator=SVC(probability=True, random_state=random_state),
         param_grid=param_grid,
         scoring='roc_auc',
         cv=3,
@@ -105,7 +93,13 @@ def train_random_forest_with_tuning(X, y, test_size=0.2, random_state=42):
     print(f"ROC-AUC 分數：{roc_auc_score(y_test, y_prob)}")
 
     # 評估不同閾值
-    evaluate_threshold(y_test, y_prob, thresholds=np.arange(0.1, 0.9, 0.1))
+    thresholds = np.arange(0.1, 0.9, 0.1)
+    for threshold in thresholds:
+        y_pred_adj = (y_prob >= threshold).astype(int)
+        precision = precision_score(y_test, y_pred_adj)
+        recall = recall_score(y_test, y_pred_adj)
+        f1 = f1_score(y_test, y_pred_adj)
+        print(f"閾值: {threshold:.2f} -> 精確率: {precision:.4f}, 召回率: {recall:.4f}, F1 分數: {f1:.4f}")
 
     # 繪製混淆矩陣
     conf_matrix = confusion_matrix(y_test, y_pred)
@@ -116,21 +110,7 @@ def train_random_forest_with_tuning(X, y, test_size=0.2, random_state=42):
     plt.ylabel("Actual")
     plt.show()
 
-    return best_model, y_test, y_pred, y_prob
-
-
-# 特徵重要性繪圖函數
-def plot_feature_importances(model, features, output_path=None):
-    feature_importances = pd.Series(model.feature_importances_, index=features).sort_values(ascending=False)
-    plt.figure(figsize=(10, 6))
-    feature_importances.plot(kind='bar')
-    plt.title("Feature Importance")
-    plt.ylabel("Importance")
-    plt.xlabel("Feature")
-    if output_path:
-        plt.savefig(output_path)
-        print(f"特徵重要性圖已儲存至：{output_path}")
-    plt.show()
+    return best_model
 
 
 # 主程式
@@ -145,12 +125,9 @@ if __name__ == "__main__":
     X, y, label_encoders = load_and_preprocess_data(file_path, features, target)
 
     # 模型訓練
-    model, y_test, y_pred, y_prob = train_random_forest_with_tuning(X, y)
-
-    # 特徵重要性繪圖
-    plot_feature_importances(model, features, output_path="/Users/zhengqunyao/model_training10.png")
+    best_model = train_svm_with_tuning(X, y)
 
     # 儲存模型
-    model_path = "/Users/zhengqunyao/model_training10.pkl"
-    joblib.dump(model, model_path)
+    model_path = "/Users/zhengqunyao/svm_model.pkl"
+    joblib.dump(best_model, model_path)
     print(f"模型已儲存至：{model_path}")

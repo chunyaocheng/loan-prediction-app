@@ -2,25 +2,31 @@ import pandas as pd
 import joblib
 
 # 1. 載入模型
-model_path = "/Users/zhengqunyao/loan_prediction_model_tuned.pkl"
-loaded_model = joblib.load(model_path)
-print("模型已成功載入！")
+#model_path = "/Users/zhengqunyao/model_training81.pkl"
+#loaded_model = joblib.load(model_path)
+#print("模型已成功載入！")
+
+model_path = "/Users/zhengqunyao/model_training82.pkl"
+loaded_data = joblib.load(model_path)  # 加載字典
+loaded_model = loaded_data['model']   # 提取模型
+best_threshold = loaded_data['best_threshold']  # 提取最佳閾值
+print("模型與最佳閾值已成功載入！")
 
 # 2. 準備單筆資料
 single_data = {
-    "Education": 50,
+    "Education": 40,
     "Employment": 10,
-    "Marital": 20,
+    "Marital": 10,
     "CompanyRelationship": 20,
-    "Industry": "F",
+    "Industry": "O",
     "Job": "6",
     "Type": 10,
     "ApprovalResult": "A051",
-    "Years": 11,
-    "Age": 37,
-    "Income": 22400,
-    "LoanIncomeRatio": 44.96,
-    "Adjust": 0.57
+    "Years": 12,
+    "Age": 34,
+    "Income": 41417,
+    "LoanIncomeRatio": 60.35,
+    "Adjust": 0.6
 }
 
 single_data_df = pd.DataFrame([single_data])

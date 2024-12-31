@@ -54,12 +54,14 @@ def train_and_optimize_xgboost(X, y, test_size=0.2, random_state=42):
     print(f"過抽樣後訓練集大小：{X_train_resampled.shape}, {y_train_resampled.shape}")
 
     param_grid = {
-    'n_estimators': [300, 500],           # 增加樹的數量，讓模型有更多學習能力
-    'max_depth': [6, 8, 10],             # 增大樹的深度以捕捉更複雜的模式
-    'learning_rate': [0.03, 0.05, 0.1],  # 增加學習率，使模型更快學習
-    'scale_pos_weight': [20, 30, 50],    # 提高少數類別的權重
-    'subsample': [0.7, 0.8, 0.9],        # 減少過擬合
-    'colsample_bytree': [0.7, 0.8]       # 控制每棵樹使用的特徵比例
+    'n_estimators': [500, 800, 1000],      # 增加樹的數量
+    'max_depth': [10, 12, 15],            # 增加樹的深度
+    'learning_rate': [0.01, 0.03, 0.05],  # 減小學習率
+    'scale_pos_weight': [40, 50, 60],     # 提高少數類別的權重
+    'subsample': [0.8, 0.9, 1.0],         # 減少過擬合
+    'colsample_bytree': [0.8, 0.9, 1.0],  # 控制每棵樹使用的特徵比例
+    'gamma': [0, 0.1, 0.3],               # 增加懲罰係數
+    'min_child_weight': [1, 3, 5]         # 控制葉節點的最小權重
     }
     
     # 隨機搜索調參
@@ -92,7 +94,7 @@ def train_and_optimize_xgboost(X, y, test_size=0.2, random_state=42):
     
     # 使用最佳閾值進行分類
     #y_pred = (y_prob >= best_threshold).astype(int)
-    y_pred = (y_prob >= 0.9).astype(int)  # 預設閥值 0.1
+    y_pred = (y_prob >= best_threshold).astype(int)  
     
     print("分類報告：\n", classification_report(y_test, y_pred))
     print("混淆矩陣：\n", confusion_matrix(y_test, y_pred))
@@ -125,10 +127,9 @@ def plot_feature_importances(model, features, output_path=None):
 # 主程式
 if __name__ == "__main__":
     # 定義檔案路徑與參數
-    file_path = "/Users/zhengqunyao/machine_learning_v13.xlsx"
+    file_path = "/Users/zhengqunyao/machine_learning_v44.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
-                "Job", "Type", "ApprovalResult", "Years", "Age"]
-    #, "Income", "LoanIncomeRatio", "Adjust"
+                "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
     target = "Flag"
     
     # 資料讀取與處理
@@ -138,9 +139,12 @@ if __name__ == "__main__":
     best_model, best_threshold = train_and_optimize_xgboost(X, y)
     
     # 特徵重要性
-    plot_feature_importances(best_model, features, output_path="/Users/zhengqunyao/feature_importances_xgboost_optimized251.png")
+    plot_feature_importances(best_model, features, output_path="/Users/zhengqunyao/model_training8.png")
     
-    # 儲存模型
-    model_path = "/Users/zhengqunyao/loan_prediction_xgboost_optimized251.pkl"
+    # 儲存預設模型
+    model_path = "/Users/zhengqunyao/model_training8.pkl"
+
     joblib.dump(best_model, model_path)
     print(f"模型已儲存至：{model_path}")
+
+

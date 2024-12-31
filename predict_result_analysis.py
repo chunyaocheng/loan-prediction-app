@@ -2,11 +2,11 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
 
 # 讀取檔案
-file_path = "/Users/zhengqunyao/predicted.xlsx"  # 修改為你的檔案路徑
+file_path = "/Users/zhengqunyao/machine_learning_v37_predicted81.xlsx"  # 修改為你的檔案路徑
 data = pd.read_excel(file_path)
 
 # 假設 'Flag' 是真實值，'預測類別' 是模型的預測結果
-y_true = data['實際類別']  # 真實值
+y_true = data['Flag']  # 真實值
 y_pred = data['預測類別']  # 預測結果
 
 # 計算混淆矩陣
