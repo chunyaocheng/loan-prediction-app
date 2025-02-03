@@ -1,0 +1,1 @@
+2025-01-27 22:39:04,834 - 最佳參數：{'colsample_bytree': 0.8, 'gamma': 0.5, 'learning_rate': 0.03, 'max_depth': 7, 'min_child_weight': 1, 'n_estimators': 800, 'reg_alpha': 1, 'reg_lambda': 1, 'scale_pos_weight': 20, 'subsample': 0.8}

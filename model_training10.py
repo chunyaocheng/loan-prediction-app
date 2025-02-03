@@ -105,7 +105,7 @@ def train_random_forest_with_tuning(X, y, test_size=0.2, random_state=42):
     print(f"ROC-AUC 分數：{roc_auc_score(y_test, y_prob)}")
 
     # 評估不同閾值
-    evaluate_threshold(y_test, y_prob, thresholds=np.arange(0.1, 0.9, 0.1))
+    evaluate_threshold(y_test, y_prob, thresholds=np.arange(0.1, 1.0, 0.1))
 
     # 繪製混淆矩陣
     conf_matrix = confusion_matrix(y_test, y_pred)
@@ -136,7 +136,7 @@ def plot_feature_importances(model, features, output_path=None):
 # 主程式
 if __name__ == "__main__":
     # 資料路徑與參數
-    file_path = "/Users/zhengqunyao/machine_learning_v44.xlsx"
+    file_path = "/Users/zhengqunyao/machine_learning_v46.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
                 "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
     target = "Flag"
