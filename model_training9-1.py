@@ -54,11 +54,11 @@ def train_xgboost_with_tuning(X, y, test_size=0.2, random_state=42):
 
     # XGBoost 模型與參數調整
     param_grid = {
-    'n_estimators': [600, 1000],  # 增加樹的數量，提高模型學習能力
-    'max_depth': [6, 10],  # 增加 max_depth 上限，讓模型學習更複雜的關係
+    'n_estimators': [800, 1200],  # 增加樹的數量，提高模型學習能力
+    'max_depth': [4, 6],  # 增加 max_depth 上限，讓模型學習更複雜的關係
     'learning_rate': [0.01, 0.05],  # 保持較低學習率，但提供稍高的選擇
     'gamma': [0.1, 0.3],  # 避免過擬合
-    'scale_pos_weight': [20, 40],  # 增大範圍，適應不同數據不平衡程度
+    'scale_pos_weight': [3, 5, 8],
     'subsample': [0.8, 1.0],  # 控制過擬合
     'colsample_bytree': [0.8, 1.0]  # 控制每棵樹的特徵選擇
     }

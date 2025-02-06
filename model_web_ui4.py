@@ -24,7 +24,7 @@ loaded_model = load_model()
 
 
 # 定義應用的標題
-st.title("mid-HPT 第三組, e啟房貸數位升級 增貸預測模型")
+st.title("mid-HPT e啟增貸 AI升級 增貸預測模型")
 
 # 讓使用者輸入資料
 st.header("請輸入以下資訊進行預測：")
