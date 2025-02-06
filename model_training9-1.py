@@ -8,6 +8,7 @@ import seaborn as sns
 import joblib
 import numpy as np
 from sklearn.metrics import precision_score, recall_score, f1_score
+from datetime import datetime
 
 # 資料讀取與預處理函數
 def load_and_preprocess_data(file_path, features, target):
@@ -124,10 +125,11 @@ if __name__ == "__main__":
     # 模型訓練
     best_model = train_xgboost_with_tuning(X, y)
 
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     # 特徵重要性
-    plot_feature_importances(best_model, features, output_path="/Users/zhengqunyao/feature_importances_xgboost_optimized.png")
-
+    plot_feature_importances(best_model, features, output_path=f"/Users/zhengqunyao/ml91_{timestamp}.png")
+    
     # 儲存模型
-    model_path = "/Users/zhengqunyao/loan_prediction_xgboost231.pkl"
+    model_path = f"/Users/zhengqunyao/ml91_{timestamp}.pkl"
     joblib.dump(best_model, model_path)
     print(f"模型已儲存至：{model_path}")

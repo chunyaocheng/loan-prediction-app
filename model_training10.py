@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 import numpy as np
+from datetime import datetime
 
 
 # 資料讀取與預處理函數
@@ -148,9 +149,10 @@ if __name__ == "__main__":
     model, y_test, y_pred, y_prob = train_random_forest_with_tuning(X, y)
 
     # 特徵重要性繪圖
-    plot_feature_importances(model, features, output_path="/Users/zhengqunyao/model_training10.png")
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    plot_feature_importances(model, features, output_path=f"/Users/zhengqunyao/ml10_{timestamp}.png")
 
     # 儲存模型
-    model_path = "/Users/zhengqunyao/model_training10.pkl"
+    model_path = f"/Users/zhengqunyao/ml10_{timestamp}.pkl"
     joblib.dump(model, model_path)
     print(f"模型已儲存至：{model_path}")

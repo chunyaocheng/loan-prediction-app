@@ -8,6 +8,7 @@ import seaborn as sns
 import joblib
 import numpy as np
 from sklearn.metrics import precision_score, recall_score, f1_score
+from datetime import datetime
 
 
 # 資料讀取與預處理函數
@@ -80,7 +81,7 @@ def train_xgboost_with_tuning(X, y, test_size=0.2, random_state=42):
     print(f"ROC-AUC 分數：{roc_auc_score(y_test, y_prob)}")
     
     # 調整不同閥值
-    thresholds = np.arange(0.1, 0.9, 0.1)  # 例如從 0.1 到 0.9 閥值
+    thresholds = np.arange(0.1, 1.0, 0.1)  # 例如從 0.1 到 0.9 閥值
     evaluate_threshold(y_test, y_prob, thresholds)
     
     # 繪製混淆矩陣
@@ -109,7 +110,7 @@ def plot_feature_importances(model, features, output_path=None):
 # 主程式
 if __name__ == "__main__":
     # 定義檔案路徑與參數
-    file_path = "/Users/zhengqunyao/machine_learning_v37.xlsx"
+    file_path = "/Users/zhengqunyao/machine_learning_v46.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
                 "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
     target = "Flag"
@@ -120,10 +121,11 @@ if __name__ == "__main__":
     # 模型訓練
     best_model = train_xgboost_with_tuning(X, y)
     
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     # 特徵重要性
-    plot_feature_importances(best_model, features, output_path="/Users/zhengqunyao/feature_importances_xgboost12221.png")
+    plot_feature_importances(best_model, features, output_path=f"/Users/zhengqunyao/ml9_{timestamp}.png")
     
     # 儲存模型
-    model_path = "/Users/zhengqunyao/loan_prediction_xgboost12221.pkl"
+    model_path = f"/Users/zhengqunyao/ml9_{timestamp}.pkl"
     joblib.dump(best_model, model_path)
     print(f"模型已儲存至：{model_path}")

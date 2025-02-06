@@ -1,1 +1,4 @@
 2025-01-27 22:39:04,834 - 最佳參數：{'colsample_bytree': 0.8, 'gamma': 0.5, 'learning_rate': 0.03, 'max_depth': 7, 'min_child_weight': 1, 'n_estimators': 800, 'reg_alpha': 1, 'reg_lambda': 1, 'scale_pos_weight': 20, 'subsample': 0.8}
+2025-02-04 16:22:05,264 - 資料處理失敗：Missing optional dependency 'openpyxl'.  Use pip or conda to install openpyxl.
+2025-02-04 17:13:47,040 - 最佳參數：{'colsample_bytree': 0.8, 'gamma': 0.5, 'learning_rate': 0.03, 'max_depth': 7, 'min_child_weight': 1, 'n_estimators': 800, 'reg_alpha': 1, 'reg_lambda': 1, 'scale_pos_weight': 20, 'subsample': 0.8}
+2025-02-04 17:17:49,047 - 模型已儲存至：/Users/zhengqunyao/loan_prediction_xgboost_20250204_171608.pkl
