@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, precision_recall_curve
+from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, precision_recall_curve,average_precision_score
 from imblearn.over_sampling import SMOTE
 from xgboost import XGBClassifier
 import matplotlib.pyplot as plt
@@ -84,6 +84,7 @@ def train_xgboost_with_tuning(X, y, test_size=0.2, random_state=42):
     print("最佳閾值下的分類報告：\n", classification_report(y_test, y_pred))
     print("混淆矩陣：\n", confusion_matrix(y_test, y_pred))
     print(f"ROC-AUC 分數：{roc_auc_score(y_test, y_prob)}")
+    print(f"PR-AUC 分數：{average_precision_score(y_test, y_prob)}")
 
     # 調整不同閥值
     evaluate_threshold(y_test, y_prob, np.arange(0.1, 1.0, 0.1))
@@ -114,7 +115,7 @@ def plot_feature_importances(model, features, output_path=None):
 # 主程式
 if __name__ == "__main__":
     # 定義檔案路徑與參數
-    file_path = "/Users/zhengqunyao/machine_learning_v46.xlsx"
+    file_path = "/Users/zhengqunyao/machine_learning_v47.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
                 "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
     target = "Flag"

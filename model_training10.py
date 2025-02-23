@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import (
     accuracy_score, classification_report, confusion_matrix,
-    roc_auc_score, precision_score, recall_score, f1_score, precision_recall_curve
+    average_precision_score, roc_auc_score, precision_score, recall_score, f1_score, precision_recall_curve
 )
 from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
@@ -68,7 +68,47 @@ def train_random_forest_with_tuning(X, y, test_size=0.2, random_state=42):
         'n_estimators': [100, 200, 300],
         'max_depth': [10, 20, 30],
         'min_samples_split': [2, 5, 10],
-        'class_weight': ['balanced', 'balanced_subsample']
+        'class_weight': ['balanced', 'balanced_subsample'],
+
+    'n_estimators': [150, 200],  # 減少樹的數量，避免過擬合
+    'max_depth': [15, 20],  # 降低 max_depth，減少學習過多細節
+    'min_samples_split': [20, 30],  # 限制過小樣本分裂，減少過擬合
+    'class_weight': [{0: 1, 1: 1.5}, {0: 1, 1: 2}],  # 減少對 1 類的過補償
+
+    'n_estimators': [100, 300],  # 減少樹的數量，避免過擬合
+    'max_depth': [20, 25],  # 降低 max_depth，提升泛化能力
+    'min_samples_split': [10, 15],
+    'class_weight': [{0: 1, 1: 1.5}, {0: 1, 1: 2}]  # 避免少數類過補償
+
+    #'n_estimators': [50, 100, 150],  # 減少樹的數量，避免過度擬合
+    #'max_depth': [5, 10, 15],  # 降低 max_depth，減少過度學習
+    #'min_samples_split': [10, 20, 30],  # 提高 min_samples_split，讓分支至少需要更多樣本才能分裂，減少過擬合
+    #'class_weight': [{0: 1, 1: 3}, {0: 1, 1: 5}, {0: 1, 1: 8}]  # 降低 scale_pos_weight，避免對少數類過度補償
+
+    #'n_estimators': [50, 80],  # 減少樹的數量，避免過擬合
+    #'max_depth': [5, 7],  # 降低 max_depth，增加泛化能力
+    #'min_samples_split': [20, 30, 50],  # 限制過小樣本分裂
+    #'max_features': ['sqrt', 'log2'],  # 限制特徵選擇，避免過度學習
+    #'class_weight': [{0: 1, 1: 2}, {0: 1, 1: 3}],  # 減少過度補償
+
+    #'n_estimators': [80, 100],  # 稍微提高，但不過度
+    #'max_depth': [8, 10],  # 允許學習更細節的模式
+    #'min_samples_split': [10, 15, 20],  # 讓模型不會過度受限
+    #'max_features': ['sqrt', 'log2'],  # 減少過度擬合
+    #'class_weight': [{0: 1, 1: 1.5}, {0: 1, 1: 2}],  # 讓 1 類補償合理化
+
+    #'n_estimators': [80, 100],  # 保持不變
+    #'max_depth': [6, 8],  # 降低以提升泛化能力
+    #'min_samples_split': [15, 20, 30],  # 降低過擬合
+    #'max_features': ['sqrt', 'log2'],  # 保持不變
+    #'class_weight': [{0: 1, 1: 1.2}, {0: 1, 1: 1.3}],  # 減少對 1 類的過度補償
+
+    #'n_estimators': [80, 100],  # 保持
+    #'max_depth': [8, 10],  # 讓模型學習更深入的結構
+    #'min_samples_split': [25, 30],  # 提高，讓決策樹學習更穩定
+    #'max_features': ['sqrt', 'log2'],  # 保持
+    #'class_weight': [{0: 1, 1: 1.05}, {0: 1, 1: 1.1}]  # 讓 1 類的補償更輕微
+
     }
 
     # 使用 GridSearchCV 尋找最佳參數
@@ -94,16 +134,35 @@ def train_random_forest_with_tuning(X, y, test_size=0.2, random_state=42):
     # 找出最佳閾值
     precision, recall, thresholds = precision_recall_curve(y_test, y_prob)
     f1_scores = 2 * (precision * recall) / (precision + recall)
-    best_threshold = thresholds[f1_scores.argmax()]
-    print(f"最佳閾值：{best_threshold}")
+    #best_threshold = thresholds[f1_scores.argmax()]
+
+    #print(f"最佳閾值：{best_threshold}")
+
+    best_threshold_f1 = thresholds[f1_scores.argmax()]
+    print(f"原先f1_scores的最佳閥值: {best_threshold_f1}")
+
+    # 找到 Recall <= 82% 的最小 threshold
+    for i, r in enumerate(recall):
+        if r <= 0.82:
+            best_threshold = thresholds[i]
+            break
+
+    print(f"選擇的最佳門檻值 (以 Recall <= 82% 為標準): {best_threshold}")
+    y_train_prob = best_model.predict_proba(X_train)[:, 1]
+    y_train_pred = (y_train_prob >= best_threshold).astype(int)
+    print("訓練集 分類報告：\n", classification_report(y_train, y_train_pred))
+    print("訓練集 混淆矩陣：\n", confusion_matrix(y_train, y_train_pred))
+    print(f"訓練集 ROC-AUC：{roc_auc_score(y_train, y_train_prob)}")
+    print(f"訓練集 PR-AUC：{average_precision_score(y_train, y_train_prob)}")
 
     # 根據最佳閾值進行分類
     y_pred = (y_prob >= best_threshold).astype(int)
 
     # 評估模型
-    print("分類報告：\n", classification_report(y_test, y_pred))
-    print("混淆矩陣：\n", confusion_matrix(y_test, y_pred))
-    print(f"ROC-AUC 分數：{roc_auc_score(y_test, y_prob)}")
+    print("測試集 分類報告：\n", classification_report(y_test, y_pred))
+    print("測試集 混淆矩陣：\n", confusion_matrix(y_test, y_pred))
+    print(f"測試集 ROC-AUC 分數：{roc_auc_score(y_test, y_prob)}")
+    print(f"測試集 PR-AUC 分數：{average_precision_score(y_test, y_prob)}")
 
     # 評估不同閾值
     evaluate_threshold(y_test, y_prob, thresholds=np.arange(0.1, 1.0, 0.1))
@@ -137,7 +196,7 @@ def plot_feature_importances(model, features, output_path=None):
 # 主程式
 if __name__ == "__main__":
     # 資料路徑與參數
-    file_path = "/Users/zhengqunyao/machine_learning_v46.xlsx"
+    file_path = "/Users/zhengqunyao/machine_learning_v25.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
                 "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
     target = "Flag"

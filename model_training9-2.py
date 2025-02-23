@@ -63,18 +63,18 @@ def train_xgboost_with_tuning(X, y, test_size=0.2, random_state=42):
     # XGBoost 模型與參數調整
     param_grid = {
         'n_estimators': [500, 800],
-        'max_depth': [5, 7],
-        'learning_rate': [0.01, 0.03],
-        'subsample': [0.8, 1.0],
+        'max_depth': [4, 6],
+        'learning_rate': [0.01, 0.05],
+        'subsample': [0.6, 1.0],
         'colsample_bytree': [0.8],
         'gamma': [0.1, 0.5],
         'min_child_weight': [1, 3],
-        'scale_pos_weight': [20, 30],
+        'scale_pos_weight': [30, 50],
         'reg_alpha': [0.1, 1],
         'reg_lambda': [1, 5]
     }
 
-    xgb_model = XGBClassifier(random_state=random_state, use_label_encoder=False, eval_metric='logloss')
+    xgb_model = XGBClassifier(random_state=random_state, use_label_encoder=False, eval_metric='aucpr')
     cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=random_state)
     grid_search = GridSearchCV(xgb_model, param_grid, scoring='f1', cv=cv, verbose=2, n_jobs=-1)
 
@@ -139,11 +139,11 @@ if __name__ == "__main__":
 
     # 特徵重要性
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_path = f"/Users/zhengqunyao/feature_importances_xgboost_{timestamp}.png"
+    output_path = f"/Users/zhengqunyao/ml92_{timestamp}.png"
     plot_feature_importances(best_model, features + ['Income_Years_Ratio', 'Age_Loan_Ratio'], output_path)
 
     # 儲存模型
-    model_path = f"/Users/zhengqunyao/loan_prediction_xgboost_{timestamp}.pkl"
+    model_path = f"/Users/zhengqunyao/ml92_{timestamp}.pkl"
     joblib.dump(best_model, model_path)
     print(f"模型已儲存至：{model_path}")
     logging.info(f"模型已儲存至：{model_path}")

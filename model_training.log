@@ -2,3 +2,11 @@
 2025-02-04 16:22:05,264 - 資料處理失敗：Missing optional dependency 'openpyxl'.  Use pip or conda to install openpyxl.
 2025-02-04 17:13:47,040 - 最佳參數：{'colsample_bytree': 0.8, 'gamma': 0.5, 'learning_rate': 0.03, 'max_depth': 7, 'min_child_weight': 1, 'n_estimators': 800, 'reg_alpha': 1, 'reg_lambda': 1, 'scale_pos_weight': 20, 'subsample': 0.8}
 2025-02-04 17:17:49,047 - 模型已儲存至：/Users/zhengqunyao/loan_prediction_xgboost_20250204_171608.pkl
+2025-02-19 23:14:59,100 - 最佳參數：{'colsample_bytree': 0.8, 'gamma': 0.5, 'learning_rate': 0.03, 'max_depth': 7, 'min_child_weight': 1, 'n_estimators': 800, 'reg_alpha': 1, 'reg_lambda': 1, 'scale_pos_weight': 20, 'subsample': 0.8}
+2025-02-19 23:17:12,553 - 模型已儲存至：/Users/zhengqunyao/loan_prediction_xgboost_20250219_231711.pkl
+2025-02-19 23:36:03,959 - 最佳參數：{'colsample_bytree': 0.8, 'gamma': 0.1, 'learning_rate': 0.05, 'max_depth': 6, 'min_child_weight': 1, 'n_estimators': 800, 'reg_alpha': 1, 'reg_lambda': 1, 'scale_pos_weight': 50, 'subsample': 0.6}
+2025-02-19 23:44:17,533 - 模型已儲存至：/Users/zhengqunyao/ml92_20250219_234414.pkl
+2025-02-19 23:55:13,081 - 最佳參數：{'colsample_bytree': 0.8, 'gamma': 0.1, 'learning_rate': 0.05, 'max_depth': 6, 'min_child_weight': 1, 'n_estimators': 800, 'reg_alpha': 1, 'reg_lambda': 1, 'scale_pos_weight': 50, 'subsample': 0.6}
+2025-02-19 23:59:47,676 - 模型已儲存至：/Users/zhengqunyao/ml92_20250219_235945.pkl
+2025-02-20 00:08:06,028 - 最佳參數：{'colsample_bytree': 0.8, 'gamma': 0.5, 'learning_rate': 0.05, 'max_depth': 6, 'min_child_weight': 1, 'n_estimators': 800, 'reg_alpha': 0.1, 'reg_lambda': 1, 'scale_pos_weight': 30, 'subsample': 0.6}
+2025-02-20 00:09:39,833 - 模型已儲存至：/Users/zhengqunyao/ml92_20250220_000937.pkl

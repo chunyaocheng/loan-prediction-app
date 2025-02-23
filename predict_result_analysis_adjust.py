@@ -2,15 +2,15 @@ import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 
 # 讀取資料
-file_path = "/Users/zhengqunyao/predicted.xlsx"  # 修改為你的檔案路徑
+file_path = "/Users/zhengqunyao/ml9_20250221_151129.xlsx"  # 修改為你的檔案路徑
 data = pd.read_excel(file_path)
 
 # 假設 '實際類別' 是真實值，'增貸概率' 是模型預測概率
-y_true = data['實際類別']  # 真實值
+y_true = data['Flag']  # 真實值
 y_prob = data['增貸概率']  # 模型預測概率
 
 # 將增貸概率 >= 0.2 視為 1，否則為 0
-threshold = 0.2
+threshold = 0.09
 y_pred_adjusted = (y_prob >= threshold).astype(int)
 
 # 計算精確率、召回率和混淆矩陣
