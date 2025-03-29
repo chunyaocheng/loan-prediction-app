@@ -211,7 +211,7 @@ def plot_feature_importances(model, features, output_path=None):
 # 主程式
 if __name__ == "__main__":
     # 定義檔案路徑與參數
-    file_path = "/Users/zhengqunyao/machine_learning_v25.xlsx"
+    file_path = "/Users/zhengqunyao/train_data.xlsx"
     features = ["Education", "Employment", "Marital", "CompanyRelationship", "Industry", 
                 "Job", "Type", "ApprovalResult", "Years", "Age", "Income", "LoanIncomeRatio", "Adjust"]
     target = "Flag"

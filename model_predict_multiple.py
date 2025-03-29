@@ -2,7 +2,7 @@ import pandas as pd
 import joblib
 
 # 1. 載入模型
-model_path = "/Users/zhengqunyao/ml9_20250221_151129.pkl"
+model_path = "/Users/zhengqunyao/lgb_model_20250318_211840.pkl"
 
 
 
@@ -10,7 +10,7 @@ loaded_model = joblib.load(model_path)
 print("模型已成功載入！")
 
 # 2. 讀取 Excel 資料
-file_path = "/Users/zhengqunyao/test_data.xlsx"
+file_path = "/Users/zhengqunyao/test_data44.xlsx"
 data = pd.read_excel(file_path)
 
 # 建立預測結果的欄位
@@ -52,6 +52,6 @@ for index, row in data.iterrows():
     data.loc[index, '增貸概率'] = predicted_prob[0]
 
 # 4. 儲存回寫結果的資料到新的 Excel
-output_path = "/Users/zhengqunyao/ml9_20250221_151129.xlsx"
+output_path = "/Users/zhengqunyao/test_data44_light_normal.xlsx"
 data.to_excel(output_path, index=False)
 print(f"預測完成，結果已儲存至：{output_path}")
